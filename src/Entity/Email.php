@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EmailRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -35,7 +37,7 @@ class Email
  * @var \DateTime
  * @Gedmo\Mapping\Annotation\Timestampable(on="create")
  * @Doctrine\ORM\Mapping\Column(type="datetime")
- * @Groups("hosting:read")
+ * @Groups("email:read")
  */
 protected $createdAt;
 
@@ -43,9 +45,16 @@ protected $createdAt;
  * @var \DateTime
  * @Gedmo\Mapping\Annotation\Timestampable(on="update")
  * @Doctrine\ORM\Mapping\Column(type="datetime")
- * @Groups("hosting:read")
+ * @Groups("email:read")
  */
 protected $updatedAt;
+
+
+
+public function __construct()
+{
+    $this->offers = new ArrayCollection();
+}
 
 
     public function getId(): ?int
@@ -88,4 +97,5 @@ protected $updatedAt;
 
         return $this;
     }
+
 }

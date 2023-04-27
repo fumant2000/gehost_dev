@@ -8,6 +8,12 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+    password_hashers:
+        # auto hasher with default options for the User class (and children)
+        App\Entity\User: 'auto'
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+             algorithm: 'auto'
+             cost:      15
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -35,6 +41,6 @@ security:
             provider: app_user_provider
 
     access_control:
-        - { path: ^/api/hostings, roles: IS_AUTHENTICATED_FULLY } # Allows accessing the Swagger UI
+        - { path: ^/api/hostings, roles: IS_AUTHENTICATED_ANONYMOUSLY } # Allows accessing the Swagger UI
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/users, roles:  IS_AUTHENTICATED_ANONYMOUSLY }

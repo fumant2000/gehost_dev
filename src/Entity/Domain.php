@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DomainRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -42,7 +44,7 @@ class Domain
  * @var \DateTime
  * @Gedmo\Mapping\Annotation\Timestampable(on="create")
  * @Doctrine\ORM\Mapping\Column(type="datetime")
- * @Groups("hosting:read")
+ * @Groups("domain:read")
  */
 private $createdAt;
 
@@ -50,9 +52,14 @@ private $createdAt;
  * @var \DateTime
  * @Gedmo\Mapping\Annotation\Timestampable(on="update")
  * @Doctrine\ORM\Mapping\Column(type="datetime")
- * @Groups("hosting:read")
+ * @Groups("domain:read")
  */
 private $updatedAt;
+
+public function __construct()
+{
+    $this->offers = new ArrayCollection();
+}
 
 
     public function getId(): ?int
@@ -107,4 +114,5 @@ private $updatedAt;
 
         return $this;
     }
+
 }

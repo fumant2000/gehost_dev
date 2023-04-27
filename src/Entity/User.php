@@ -12,9 +12,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="It looks like you already have an account")
  * @ApiResource(
 * normalizationContext={"groups"={"user:read"}},
 * denormalizationContext={"groups"={"user:write"}}
@@ -67,14 +70,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true )
     *@Groups({"user:read", "user:write", "transaction:read"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="integer")
-    *@Groups({"user:read", "user:write", "transaction:read"})
+    *@Groups({"user:read","transaction:read"})
      */
     private $type;
       /**
@@ -94,12 +97,6 @@ protected $createdAt;
 protected $updatedAt;
 
 /**
- * @ORM\ManyToMany(targetEntity=Offer::class, mappedBy="users")
- *  @Groups("user:read")
- */
-private $offers;
-
-/**
  * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user")
  *  @Groups("user:read")
  */
@@ -107,8 +104,8 @@ private $transactions;
 
 public function __construct()
 {
-    $this->offers = new ArrayCollection();
     $this->transactions = new ArrayCollection();
+    $this->type=1;
 }
 
 
@@ -240,33 +237,6 @@ public function __construct()
     public function setType(int $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Offer>
-     */
-    public function getOffers(): Collection
-    {
-        return $this->offers;
-    }
-
-    public function addOffer(Offer $offer): self
-    {
-        if (!$this->offers->contains($offer)) {
-            $this->offers[] = $offer;
-            $offer->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOffer(Offer $offer): self
-    {
-        if ($this->offers->removeElement($offer)) {
-            $offer->removeUser($this);
-        }
 
         return $this;
     }

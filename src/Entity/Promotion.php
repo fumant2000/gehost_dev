@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PromotionRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -56,6 +58,11 @@ protected $createdAt;
  */
 protected $updatedAt;
 
+public function __construct()
+{
+    $this->offers = new ArrayCollection();
+}
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,4 +115,5 @@ protected $updatedAt;
 
         return $this;
      }
+
 }

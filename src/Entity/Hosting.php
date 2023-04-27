@@ -33,7 +33,7 @@ class Hosting
      */
     private $title;
  /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"hosting:read", "hosting:write"})
      */
     private $level;
@@ -56,8 +56,14 @@ protected $updatedAt;
 
 /**
  * @ORM\Column(type="string", length=255)
+ * @Groups({"hosting:read", "hosting:write"})
  */
 private $type;
+
+public function __construct()
+{
+    $this->offers = new ArrayCollection();
+}
 
 
     public function getId(): ?int

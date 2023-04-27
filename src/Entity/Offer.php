@@ -24,54 +24,55 @@ class Offer
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("offer:read")
+     * @Groups({"offer:read", })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"offer:read", "offer:write", })
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"offer:read", "offer:write"})
+     * @Groups({"offer:read", "offer:write", })
      */
     private $description;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"offer:read", "offer:write"})
+     * @ORM\Column(type="float")
+     * @Groups({"offer:read", "offer:write", })
      */
     private $reduction;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"offer:read", "offer:write"})
+     * @Groups({"offer:read", "offer:write", })
      */
     private $price;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"offer:read", "offer:write"})
+     *  @ORM\Column(type="string", length=255)
+     * @Groups({"offer:read", "offer:write", })
      */
     private $priority;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"offer:read", "offer:write"})
+     * @Groups({"offer:read", "offer:write", })
      */
     private $renewalPayement;
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Groups({"offer:read", "offer:write"})
+     * @Groups({"offer:read", "offer:write", })
      */
     private $features = [];
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Groups({"offer:read", "offer:write"})
+     * @Groups({"offer:read", "offer:write", })
      */
     private $paymentMethod = [];
 
@@ -93,21 +94,17 @@ protected $updatedAt;
 
 /**
  * @ORM\Column(type="string", length=255)
- * @Groups({"offer:read", "offer:write"})
+ *  @Groups({"offer:read", "offer:write", })
  */
 private $type;
-
-/**
- * @ORM\ManyToMany(targetEntity=User::class, inversedBy="offers")
- * @Groups("offer:read")
- */
-private $users;
 
 /**
  * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="offer")
  * @Groups("offer:read")
  */
 private $transactions;
+
+
 
 public function __construct()
 {
@@ -144,12 +141,12 @@ public function __construct()
         return $this;
     }
 
-    public function getReduction(): ?int
+    public function getReduction(): ?float
     {
         return $this->reduction;
     }
 
-    public function setReduction(int $reduction): self
+    public function setReduction (float $reduction): self
     {
         $this->reduction = $reduction;
 
@@ -168,12 +165,12 @@ public function __construct()
         return $this;
     }
 
-    public function getPriority(): ?int
+    public function getPriority(): ?string
     {
         return $this->priority;
     }
 
-    public function setPriority(int $priority): self
+    public function setPriority(string $priority): self
     {
         $this->priority = $priority;
 
@@ -252,30 +249,6 @@ public function __construct()
     }
 
     /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        $this->users->removeElement($user);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Transaction>
      */
     public function getTransactions(): Collection
@@ -304,5 +277,6 @@ public function __construct()
 
         return $this;
     }
+
 
 }
