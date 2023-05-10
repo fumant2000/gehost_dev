@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Hosting;
+use App\Entity\HostingOffer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Hosting>
+ * @extends ServiceEntityRepository<HostingOffer>
  *
- * @method Hosting|null find($id, $lockMode = null, $lockVersion = null)
- * @method Hosting|null findOneBy(array $criteria, array $orderBy = null)
- * @method Hosting[]    findAll()
- * @method Hosting[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method HostingOffer|null find($id, $lockMode = null, $lockVersion = null)
+ * @method HostingOffer|null findOneBy(array $criteria, array $orderBy = null)
+ * @method HostingOffer[]    findAll()
+ * @method HostingOffer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class HostingRepository extends ServiceEntityRepository
+class HostingOfferRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Hosting::class);
+        parent::__construct($registry, HostingOffer::class);
     }
 
-    public function add(Hosting $entity, bool $flush = false): void
+    public function add(HostingOffer $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class HostingRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Hosting $entity, bool $flush = false): void
+    public function remove(HostingOffer $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class HostingRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Hosting[] Returns an array of Hosting objects
+//     * @return HostingOffer[] Returns an array of HostingOffer objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class HostingRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Hosting
+//    public function findOneBySomeField($value): ?HostingOffer
 //    {
 //        return $this->createQueryBuilder('h')
 //            ->andWhere('h.exampleField = :val')

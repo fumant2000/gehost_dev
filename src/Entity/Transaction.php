@@ -32,44 +32,81 @@ class Transaction
  */
 protected $createdAt;
 
-/**
- * @ORM\ManyToOne(targetEntity=Offer::class, inversedBy="transactions")
- * @ORM\JoinColumn(nullable=false)
- * @Groups("transaction:read")
- */
-private $offer;
 
 /**
  * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactions")
  * @ORM\JoinColumn(nullable=false)
- * @Groups("transaction:read")
+ * @Groups({"transaction:read", "transaction:write", "user:read"})
  */
 private $user;
 
 /**
  * @ORM\Column(type="integer")
- * @Groups({"transaction:read","user:read"})
+ * @Groups({"transaction:read","transaction:write", "user:read"})
  * 
  */
 private $amount;
 
 /**
  * @ORM\Column(type="string", length=255)
- * @Groups({"transaction:read","user:read"})
+ * @Groups({"transaction:read","transaction:write","user:read"})
  */
 private $paymentMode;
 
 /**
- * @ORM\Column(type="string", length=255)
- * @Groups({"transaction:read","user:read"})
+ * @ORM\Column(type="string", length=255, nullable=true)
+ * @Groups({"transaction:read","transaction:write","user:read"})
  */
 private $offerType;
 
 /**
  * @ORM\Column(type="integer")
-*  @Groups({"transaction:read","user:read"})
+ * @Groups({"transaction:read","transaction:write", "user:read"})
  */
 private $offerDuration;
+
+/**
+ * @ORM\Column(type="string", length=255)
+ * @Groups({"transaction:read","transaction:write","user:read"})
+ */
+private $sourceContact;
+
+/**
+ * @ORM\Column(type="string", length=255)
+ * @Groups({"transaction:read","transaction:write", "user:read"})
+ */
+private $destinationContact;
+
+/**
+ * @ORM\Column(type="string", length=255)
+ *@Groups({"transaction:read","transaction:write", "user:read"})
+ */
+private $requestStatus;
+
+/**
+ * @ORM\Column(type="string", length=255, nullable=true)
+ * @Groups({"transaction:read","transaction:write","user:read"})
+ */
+private $transactionDate;
+
+/**
+ * @ORM\Column(type="json")
+ * @Groups({"transaction:read","transaction:write","user:read"})
+ */
+private $allResponse = [];
+
+/**
+ * @ORM\Column(type="string", length=255)
+ * @Groups({"transaction:read","transaction:write", "user:read"})
+ */
+private $idTransaction;
+
+/**
+ * @ORM\ManyToOne(targetEntity=Offer::class, inversedBy="transactions")
+ * @ORM\JoinColumn(nullable=false)
+ *  @Groups({"transaction:read","transaction:write"})
+ */
+private $offer;
 
     public function getId(): ?int
     {
@@ -83,18 +120,6 @@ private $offerDuration;
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getOffer(): ?Offer
-    {
-        return $this->offer;
-    }
-
-    public function setOffer(?Offer $offer): self
-    {
-        $this->offer = $offer;
 
         return $this;
     }
@@ -158,4 +183,95 @@ private $offerDuration;
 
         return $this;
     }
+    public function getSourceContact(): ?string
+    {
+        return $this->sourceContact;
+    }
+
+    public function setSourceContact(string $sourceContact): self
+    {
+        $this->sourceContact = $sourceContact;
+
+        return $this;
+    }
+
+    public function getDestinationContact(): ?string
+    {
+        return $this->destinationContact;
+    }
+
+    public function setDestinationContact(string $destinationContact): self
+    {
+        $this->destinationContact = $destinationContact;
+
+        return $this;
+    }
+
+    public function getRequestStatus(): ?string
+    {
+        return $this->requestStatus;
+    }
+
+    public function setRequestStatus(string $requestStatus): self
+    {
+        $this->requestStatus = $requestStatus;
+
+        return $this;
+    }
+
+    public function getTransactionDate(): ?string
+    {
+        return $this->transactionDate;
+    }
+
+    public function setTransactionDate(?string $transactionDate): self
+    {
+        $this->transactionDate = $transactionDate;
+
+        return $this;
+    }
+
+    public function getAllResponse(): ?array
+    {
+        return $this->allResponse;
+    }
+
+    public function setAllResponse(array $allResponse): self
+    {
+        $this->allResponse = $allResponse;
+
+        return $this;
+    }
+
+/**
+ * Get the value of idTransaction
+ */ 
+public function getIdTransaction():? stirng
+{
+return $this->idTransaction;
+}
+
+/**
+ * Set the value of idTransaction
+ *
+ * @return  self
+ */ 
+public function setIdTransaction($idTransaction)
+{
+$this->idTransaction = $idTransaction;
+
+return $this;
+}
+
+public function getOffer(): ?Offer
+{
+    return $this->offer;
+}
+
+public function setOffer(?Offer $offer): self
+{
+    $this->offer = $offer;
+
+    return $this;
+}
 }

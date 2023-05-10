@@ -24,55 +24,55 @@ class Offer
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"offer:read", })
+     * @Groups({"offer:read","transaction:read", "hostingoffer:read","emailoffer:read","promotionoffer:read","domainoffer:read" })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"offer:read", "offer:write", })
+     * @Groups({"offer:read","transaction:read", "offer:write", "hostingoffer:read","emailoffer:read","promotionoffer:read","domainoffer:read" })
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"offer:read", "offer:write", })
+     * @Groups({"offer:read","transaction:read", "offer:write", "hostingoffer:read", "emailoffer:read","promotionoffer:read","domainoffer:read" })
      */
     private $description;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"offer:read", "offer:write", })
+     * @Groups({"offer:read","transaction:read", "offer:write", "hostingoffer:read", "emailoffer:read","promotionoffer:read","domainoffer:read" })
      */
     private $reduction;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"offer:read", "offer:write", })
+     * @Groups({"offer:read","transaction:read", "offer:write", "hostingoffer:read","emailoffer:read","promotionoffer:read","domainoffer:read" })
      */
     private $price;
 
     /**
      *  @ORM\Column(type="string", length=255)
-     * @Groups({"offer:read", "offer:write", })
+     * @Groups({"offer:read","transaction:read", "offer:write", "hostingoffer:read", "emailoffer:read","promotionoffer:read","domainoffer:read" })
      */
     private $priority;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"offer:read", "offer:write", })
+     * @Groups({"offer:read","transaction:read", "offer:write", "hostingoffer:read", "emailoffer:read","promotionoffer:read","domainoffer:read" })
      */
     private $renewalPayement;
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Groups({"offer:read", "offer:write", })
+     * @Groups({"offer:read","transaction:read", "offer:write", "hostingoffer:read", "emailoffer:read","promotionoffer:read","domainoffer:read" })
      */
     private $features = [];
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Groups({"offer:read", "offer:write", })
+     * @Groups({"offer:read","transaction:read", "offer:write", "hostingoffer:read", "emailoffer:read","promotionoffer:read","domainoffer:read" })
      */
     private $paymentMethod = [];
 
@@ -80,7 +80,7 @@ class Offer
  * @var \DateTime
  * @Gedmo\Mapping\Annotation\Timestampable(on="create")
  * @Doctrine\ORM\Mapping\Column(type="datetime")
- * @Groups("offer:read")
+ * @Groups({"offer:read","transaction:read", "hostingoffer:read", "emailoffer:read","promotionoffer:read","domainoffer:read"})
  */
 protected $createdAt;
 
@@ -88,19 +88,42 @@ protected $createdAt;
  * @var \DateTime
  * @Gedmo\Mapping\Annotation\Timestampable(on="update")
  * @Doctrine\ORM\Mapping\Column(type="datetime")
- * @Groups("offer:read")
+ * @Groups({"offer:read","transaction:read","hostingoffer:read", "emailoffer:read","promotionoffer:read","domainoffer:read"})
  */
 protected $updatedAt;
 
 /**
  * @ORM\Column(type="string", length=255)
- *  @Groups({"offer:read", "offer:write", })
+ *  @Groups({"offer:read", "transaction:read", "offer:write", "hostingoffer:read", "emailoffer:read","promotionoffer:read","domainoffer:read" })
  */
 private $type;
 
 /**
+ * @ORM\ManyToOne(targetEntity=HostingOffer::class, inversedBy="offers")
+ * @Groups({"offer:write"})
+ */
+private $hosting;
+
+/**
+ * @ORM\ManyToOne(targetEntity=PromotionOffer::class, inversedBy="offers")
+ * @Groups({"offer:write"})
+ */
+private $promotion;
+
+/**
+ * @ORM\ManyToOne(targetEntity=DomainOffer::class, inversedBy="offers")
+ * @Groups({"offer:write"})
+ */
+private $domain;
+
+/**
+ * @ORM\ManyToOne(targetEntity=EmailOffer::class, inversedBy="offers")
+ * @Groups({"offer:write"})
+ */
+private $email;
+
+/**
  * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="offer")
- * @Groups("offer:read")
  */
 private $transactions;
 
@@ -244,6 +267,54 @@ public function __construct()
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getHosting(): ?HostingOffer
+    {
+        return $this->hosting;
+    }
+
+    public function setHosting(?HostingOffer $hosting): self
+    {
+        $this->hosting = $hosting;
+
+        return $this;
+    }
+
+    public function getPromotion(): ?PromotionOffer
+    {
+        return $this->promotion;
+    }
+
+    public function setPromotion(?PromotionOffer $promotion): self
+    {
+        $this->promotion = $promotion;
+
+        return $this;
+    }
+
+    public function getDomain(): ?DomainOffer
+    {
+        return $this->domain;
+    }
+
+    public function setDomain(?DomainOffer $domain): self
+    {
+        $this->domain = $domain;
+
+        return $this;
+    }
+
+    public function getEmail(): ?EmailOffer
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?EmailOffer $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }
